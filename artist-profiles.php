@@ -13,7 +13,7 @@ add_action( 'init', 'create_artist_profile' );
 add_action( 'init', 'create_affiliate_profile' );
 
 function create_artist_profile() {
-    register_post_type( 'artist_profile',
+    register_post_type( 'artist-profile',
         array(
             'labels' => array(
                 'name' => 'Artist Profiles',
@@ -35,14 +35,14 @@ function create_artist_profile() {
 	    'exclude_from_search' => false,
             'menu_position' => 6,
             'supports' => array( 'title', 'editor', 'author', 'thumbnail', 'custom-fields', 'revisions' ),
-            'taxonomies' => array( 'artist_profile_location', 'artist_profile_ethnicity', 'artist_profile_medium', 'artist_profile_discipline' ), 
+            'taxonomies' => array( 'artist-profile-location', 'artist-profile-ethnicity', 'artist-profile-medium', 'artist-profile-discipline' ), 
 	    'register_meta_box_cb' => 'when_rendering_artist_profile'
         )
     );
 }
 
 function create_affiliate_profile() {
-    register_post_type( 'affiliate_profile',
+    register_post_type( 'affiliate-profile',
         array(
             'labels' => array(
                 'name' => 'Affiliate Profiles',
@@ -64,7 +64,7 @@ function create_affiliate_profile() {
 	    'exclude_from_search' => false,
             'menu_position' => 8,
             'supports' => array( 'title', 'editor', 'author', 'thumbnail', 'custom-fields', 'revisions' ),
-            'taxonomies' => array( 'affiliate_profile_location', 'affiliate_profile_discipline' ),
+            'taxonomies' => array( 'affiliate-profile-location', 'affiliate-profile-discipline' ),
 	    'register_meta_box_cb' => 'when_rendering_affiliate_profile'
         )
     );
@@ -78,7 +78,9 @@ function create_affiliate_profile() {
  *  
  */
 function when_rendering_artist_profile($post) { 
-    echo "Rendering Artist Profile" ; 
+
+    return ; 
+
     /*
      * Adds a box to the main column on the Artist Profile custom post type admin page
      */
@@ -109,6 +111,9 @@ function when_rendering_artist_profile($post) {
 }
 
 function when_rendering_affiliate_profile($post) { 
+
+    return ; 
+
     add_meta_box( 
         'location_meta_box',
         'Location',
@@ -131,112 +136,113 @@ function when_rendering_affiliate_profile($post) {
 add_action( 'init', 'create_artist_taxonomies' );
 add_action( 'init', 'create_affiliate_taxonomies' );
 
+/*
+ * Front end to register_taxonomy
+ * @param string taxonomy_name
+ * @param string|array post_type
+ * @param array labels
+ */
+function register_profile_taxonomy($taxonomy_name, $post_type, $labels) {
+
+    $capabilities = array(
+        'manage_terms' => true,
+        'edit_terms' => true,
+        'delete_terms' => true,
+        'assign_terms' => true
+    );
+
+    register_taxonomy(
+        $taxonomy_name, 
+        $post_type,
+        array(
+            'labels' => $labels, 
+	    'public' => true, 
+            'show_ui' => true,
+            'show_tagcloud' => false,
+            'hierarchical' => true,
+            'capabilities' => $capabilities
+        )
+    );
+}
+
 function create_artist_taxonomies() {
-    register_taxonomy(
-        'artist_profile_location',
-        'artist_profile',
+
+    $post_type = 'artist-profile' ; 
+
+    register_profile_taxonomy(
+        'artist-profile-location',
+        $post_type,
         array(
-            'labels' => array(
-                'name' => 'Location',
-                'add_new_item' => 'Add Location',
-                'new_item_name' => "New Location"
-            ),
-            'show_ui' => true,
-            'show_tagcloud' => false,
-            'hierarchical' => true
+            'name' => 'Location',
+            'add_new_item' => 'Add Location',
+            'new_item_name' => "New Location"
+        )
+    ) ;
+
+    register_profile_taxonomy(
+        'artist-profile-location',
+        $post_type,
+        array(
+            'name' => 'Location',
+            'add_new_item' => 'Add Location',
+            'new_item_name' => "New Location"
         )
     );
 
-    register_taxonomy(
-        'artist_profile_ethnicity',
-        'artist_profile',
+    register_profile_taxonomy(
+        'artist-profile-ethnicity',
+        $post_type,
         array(
-            'labels' => array(
-                'name' => 'Ethnicity',
-                'add_new_item' => 'Add Ethnicity',
-                'new_item_name' => "New Ethnicity"
-            ),
-            'show_ui' => true,
-            'show_tagcloud' => false,
-            'hierarchical' => true
+            'name' => 'Ethnicity',
+            'add_new_item' => 'Add Ethnicity',
+            'new_item_name' => "New Ethnicity"
         )
     );
 
-    register_taxonomy(
-        'artist_profile_medium',
-        'artist_profile',
+    register_profile_taxonomy(
+        'artist-profile-medium',
+        $post_type,
         array(
-            'labels' => array(
-                'name' => 'Medium',
-                'add_new_item' => 'Add Medium',
-                'new_item_name' => "New Medium"
-            ),
-            'show_ui' => true,
-            'show_tagcloud' => false,
-            'hierarchical' => true
+            'name' => 'Medium',
+            'add_new_item' => 'Add Medium',
+            'new_item_name' => "New Medium"
         )
     );
 
-    register_taxonomy(
-        'artist_profile_discipline',
-        'artist_profile',
+    register_profile_taxonomy(
+        'artist-profile-discipline',
+        $post_type,
         array(
-            'labels' => array(
-                'name' => 'Artistic Discipline',
-                'add_new_item' => 'Add Discipline',
-                'new_item_name' => "New Discipline"
-            ),
-            'show_ui' => true,
-            'show_tagcloud' => false,
-            'hierarchical' => true
+            'name' => 'Artistic Discipline',
+            'add_new_item' => 'Add Discipline',
+            'new_item_name' => "New Discipline"
         )
     );
 }
 
 function create_affiliate_taxonomies() {
-    register_taxonomy(
-        'affiliate_profile_location',
-        'affiliate_profile',
+
+    $post_type = 'affiliate-profile' ; 
+
+    register_profile_taxonomy(
+        'affiliate-profile-location',
+        $post_type,
         array(
-            'labels' => array(
-                'name' => 'Location',
-                'add_new_item' => 'Add Location',
-                'new_item_name' => "New Location"
-            ),
-            'show_ui' => true,
-            'show_tagcloud' => false,
-            'hierarchical' => true
+            'name' => 'Location',
+            'add_new_item' => 'Add Location',
+            'new_item_name' => "New Location"
         )
     );
 
-    register_taxonomy(
-        'affiliate_profile_discipline',
-        'affiliate_profile',
+    register_profile_taxonomy(
+        'affiliate-profile-discipline',
+        $post_type,
         array(
-            'labels' => array(
-                'name' => 'Affiliate Discipline',
-                'add_new_item' => 'Add Discipline',
-                'new_item_name' => "New Discipline"
-            ),
-            'show_ui' => true,
-            'show_tagcloud' => true,
-            'hierarchical' => true
+            'name' => 'Affiliate Discipline',
+            'add_item' => 'Add Discipline',
+            'newm_name' => "New Discipline"
         )
     );
-}
-
-/*
- * _insert_terms
- *  A front end to wp_insert_term that loops through the supplied terms and inserts them into the supplied taxonomy.
- *  @param array $terms A list of taxonomy terms to be added
- *  @param string $taxonomy The name of the taxonomy to which to add the terms
- *  @param array|string args (optional) Passed along to wp_insert_term just for compatability, 
- *         Change the values of the inserted term 
-*/
-function _insert_terms($terms, $taxonomy, $args='') { 
-    foreach($terms as $term) {
-        wp_insert_term($term, $taxonomy, $args) ; 
-    }
 }
 
 /*
@@ -244,6 +250,20 @@ function _insert_terms($terms, $taxonomy, $args='') {
  * Combining artists and affiliates here since they share the same list of locations
  */
 function insert_artist_affiliate_terms() {
+
+    /*
+     * _insert_terms
+     *  A front end to wp_insert_term that loops through the supplied terms and inserts them into the supplied taxonomy.
+     *  @param array $terms A list of taxonomy terms to be added
+     *  @param string $taxonomy The name of the taxonomy to which to add the terms
+     *  @param array|string args (optional) Passed along to wp_insert_term just for compatability, 
+     *         Change the values of the inserted term 
+    */
+    function _insert_terms($terms, $taxonomy, $args='') { 
+        foreach($terms as $term) {
+            wp_insert_term($term, $taxonomy, $args) ; 
+        }
+    }
 
     $locations = array(
         'New York City, NY' => 'New York City, NY',
@@ -370,31 +390,16 @@ function insert_artist_affiliate_terms() {
         'Scholar' => 'Scholar'
     );
 
-    _insert_terms($locations, 'artist_profile_location') ; 
-    _insert_terms($ethnicities, 'artist_profile_ethnicity') ; 
-    _insert_terms($mediums, 'artist_profile_medium'); 
-    _insert_terms($artistic_disciplines, 'artist_profile_discipline'); 
-    _insert_terms($locations, 'affiliate_profile_location') ; 
-    _insert_terms($affiliate_disciplines, 'affiliate_profile_discipline') ; 
+    _insert_terms($locations, 'artist-profile-location') ; 
+    _insert_terms($ethnicities, 'artist-profile-ethnicity') ; 
+    _insert_terms($mediums, 'artist-profile-medium'); 
+    _insert_terms($artistic_disciplines, 'artist-profile-discipline'); 
+    _insert_terms($locations, 'affiliate-profile-location') ; 
+    _insert_terms($affiliate_disciplines, 'affiliate-profile-discipline') ; 
 }
 
 add_action( 'init', 'insert_artist_affiliate_terms' );
 
-
-/*
-function format_checkbox($taxonomy, $term) { 
-  return "<input type='checkbox' name='$taxonomy" . "_$term' value='$term'>$term</input>" ; 
-}
-
-function make_checkboxes($terms) { 
-
-    $checkboxes = () ; 
-    for term in terms {
-      push checkboxes format_checkbox(term) ;
-    }
-
-}
-*/
 
 /**
  * Prints the box content.
@@ -410,7 +415,7 @@ function display_ethnicity_meta_box( $artist_profile ) {
      * Use get_post_meta() to retrieve an existing value
      * from the database and use the value for the form.
      */
-    //$ethnicity = get_post_meta( $artist_profile->ID, 'artist_profile_ethnicity', true );
+    //$ethnicity = get_post_meta( $artist_profile->ID, 'artist-profile-ethnicity', true );
     //echo esc_attr( $ethnicity )
 
 }

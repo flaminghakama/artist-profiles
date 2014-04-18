@@ -17,9 +17,6 @@ http://wordpress.org/plugins/advanced-custom-fields
 Post title: use for SEO? Artist name, discipline, media, location?
 No use of custom fields, content or excerpt.
 
-Artist Statment
-artist_statement
-
 First Name
 first_name
 
@@ -34,6 +31,9 @@ published_email
 
 Social Media Profiles
 social_media_profiles
+
+Artist Statment
+artist_statement
 
 Bio
 artist_bio
