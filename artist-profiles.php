@@ -423,4 +423,50 @@ function display_location_meta_box( $profile ) { echo "display_location_meta_box
 function display_medium_meta_box( $artist_profile ) { }
 function display_artistic_discipline_meta_box( $artist_profile ) { }
 function display_affiliate_discipline_meta_box( $affiliate_profile ) { }
+
+
+/*
+    Gallery
+ */
+add_image_size( 'artist-profile-picture', 280, 280, true );
+add_image_size( 'artist-profile-gallery-thumbnail', 229, 256, true );
+
+add_action( 'init', 'create_artwork' );
+
+function create_artwork() {
+    register_post_type( 'work-of-art',
+        array(
+            'labels' => array(
+                'name' => 'Artwork',
+                'singular_name' => 'Work of Art',
+                'add_new' => 'Add New Art',
+                'add_new_item' => 'Add New Work of Art',
+                'edit' => 'Edit',
+                'edit_item' => 'Edit Work of Art',
+                'new_item' => 'New Work of Art',
+                'view' => 'View',
+                'view_item' => 'View Work of Art',
+                'search_items' => 'Search Artwork',
+                'not_found' => 'No Artwork found',
+                'not_found_in_trash' => 'No Artwork found in Trash',
+                'parent' => ''
+            ), 
+            'description' => 'Your Gallery of Artwork on the AAWAA website',
+            'public' => true,
+	    'exclude_from_search' => false,
+            'menu_position' => 9,
+            'supports' => array( 'title', 'editor', 'author', 'thumbnail', ),
+            'taxonomies' => array( 'artwork-genre', 'artwork-medium'), 
+	    'register_meta_box_cb' => 'when_rendering_artwork'
+        )
+    );
+}
+
+/*
+ *  Callback functions called when setting up meta boxes for the edit form. 
+ *  @param post Contains the WP_Post object for the currently edited post. 
+ */
+function when_rendering_artwork($work_of_art) { 
+    return ; 
+}
 ?>
