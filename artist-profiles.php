@@ -429,7 +429,8 @@ function display_affiliate_discipline_meta_box( $affiliate_profile ) { }
     Gallery
  */
 add_image_size( 'artist-profile-picture', 280, 280, true );
-add_image_size( 'artist-profile-gallery-thumbnail', 229, 256, true );
+add_image_size( 'artist-profile-gallery-thumbnail', 167, 146, true );
+add_image_size( 'artwork-gallery-thumbnail', 142, 158, true );
 
 add_action( 'init', 'create_artwork' );
 
